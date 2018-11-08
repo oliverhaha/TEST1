@@ -1,0 +1,95 @@
+body,div,header,footer,nav {margin: 0; padding:0;}
+.wrapper {      /* Gesamtausdehnung des grid */
+    position: absolute; display: grid;
+    top:0;bottom:0;left:0; right:0;
+    grid-template-columns: 100px auto; 
+    grid-template-rows: 55px auto 40px;
+    grid-template-areas: "nav head" "nav main" "foot foot";
+}
+
+header,footer {background-color: lightblue;}
+/* Definition der grid-Areas */
+header {grid-area: head;
+        font-size:18px;
+        color:crimson;
+        text-align: center;
+}
+
+header:hover {
+    font-size:20px;
+}
+
+footer {
+    grid-area: foot;
+}
+
+nav {grid-area: nav;
+     background-color: lightgreen;
+}
+
+.main {grid-area: main;
+      background: linear-gradient(to top ,lightblue, white);
+      display: none;
+      overflow: auto;
+}
+
+/* Menu: am anfang wird main1 angezeigt, dann das im nav ausgewaehlte div */
+/*#tab {  display: block; }*/
+.main:target {  display: block;  }
+
+nav a {text-decoration: none;}
+nav li {list-style: none;}
+nav li:hover {border: 1px solid black}
+nav ul{ margin:2px;padding:2px;}
+
+#tab>ul>li {font-weight: bold;}
+#tab ul ol {font-weight: normal;}
+#tab ul ol ul li {color:red;list-style: disc}
+#tab figure {
+    border: 1px solid black;
+    border-radius: 40px;
+    text-align: center;
+}
+
+.rechts {float:right;}
+table,th, td {border: 1px solid black;}/* Rahmen: schwarze Linie, 1px breit */
+table {
+    margin:10px;
+    border-collapse:collapse;
+}  /*  Linien zusammenfassen */
+
+thead {
+    background-color: lightskyblue;
+    border-radius: 5px;
+}
+table caption {font-weight: bold;}
+
+form {margin-left: 20px;}
+form label {
+    display: inline-block;
+    width: 180px;
+}
+
+form input {width: 160px;}
+.rot {color: red}
+.gruen {color: green}
+.rahmen {border: 1px solid black}
+fieldset { border-radius: 30px;}
+
+/* einheitlich Breite für labels */
+.label {float:left; width: 150px}
+/* oder so*/
+.label {
+    display:inline-block;
+    width: 150px
+}
+
+/* Prüfungen */
+input:invalid {  box-shadow:none;}
+/* im Label nach dem RequiredFeld vor dem
+        bisherigen Inhalt einen * einfügen */
+input:required + label::before {  content:"* "; color:#f00;}
+/* nicht oder falsch ausgefuellte Felder rot markieren */
+input:focus:invalid {  border-color:#f00;}
+/* richtig ausgefuellte Felder gruen markieren */
+input:required:focus:valid {  border-color:#0c0; }
