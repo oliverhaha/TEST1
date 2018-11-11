@@ -1,0 +1,482 @@
+
+# Datum rückwärts durch minus getrennt und
+# in '' eingeschlossen
+SELECT * FROM personal
+WHERE eintrittsdatum > '2008-01-01'
+
+
+# Datumsfunktionen
+SELECT persnr, name, vorname,
+eintrittsdatum,
+year(eintrittsdatum),
+month(eintrittsdatum),
+day(eintrittsdatum),
+dayname(eintrittsdatum),
+weekday(eintrittsdatum),
+dayofweek(eintrittsdatum)
+FROM personal
+
+
+SELECT 
+dayname('2018-12-24') AS Weihnachten,
+
+dayname('2018-12-31') AS Silvester
+
+# Geburtstag??
+
+
+# Weitere Datumsfunktionen
+SELECT 
+adddate(curdate(), 14) as 14_tage,
+adddate('2018-10-25', 14) ,
+'2018-10-25' + 14  as falsch,
+datediff('2018-12-24', curdate() ) as tage_bis_weihnachten
+
+
+
+
+
+
+
+Gruppenfunktionen oder Aggregatfunktionen
+#----------------------------------------
+
+laufen über Gruppen von Datensätzen (mehrere Zeilen)
+
+MIN, MAX, SUM, AVG, COUNT
+
+SELECT 
+MIN(gehalt),
+MAX(gehalt),
+SUM(gehalt),
+ROUND(AVG(gehalt),2),
+COUNT(gehalt)
+FROM personal
+
+Achtung!! hier wird der Name angezeigt
+z.B. Lorenz der ist sicher falsch
+# ------------------------------------
+SELECT 
+Name,
+MIN(gehalt),
+MAX(gehalt),
+SUM(gehalt),
+ROUND(AVG(gehalt),2),
+COUNT(gehalt)
+FROM personal
+
+# Gruppen bilden, Spalten nach denen gruppiert wird, 
+# dürfen angezeigt werden
+# --------------------------------------------------
+SELECT 
+Abteilung,
+MIN(gehalt),
+MAX(gehalt),
+SUM(gehalt),
+ROUND(AVG(gehalt),2),
+COUNT(gehalt)
+FROM personal
+GROUP BY Abteilung
+
+# Weitere Gruppe
+# --------------
+SELECT 
+Taetigkeit,
+MIN(gehalt),
+MAX(gehalt),
+SUM(gehalt),
+ROUND(AVG(gehalt),2),
+COUNT(gehalt)
+FROM personal
+GROUP BY Taetigkeit
+
+Es gibt auch Hauptgruppe und Untergruppe
+gruppieren nach Abteilung und innerhalb der 
+gleichen Abteilung nach Tätigkeit
+# --------------------------------------
+SELECT 
+Abteilung,
+Taetigkeit,
+MIN(gehalt),
+MAX(gehalt),
+SUM(gehalt),
+ROUND(AVG(gehalt),2),
+COUNT(gehalt)
+FROM personal
+GROUP BY Abteilung, Taetigkeit
+
+# SQL-Abfrage komplett
+# mit WHERE und HAVING
+# Reihenfolge beachten: SELECT FROM WHERE GROUP BY HAVING ORDER BY
+# --------------------
+SELECT 
+Abteilung,
+MIN(gehalt),
+MAX(gehalt),
+SUM(gehalt),
+ROUND(AVG(gehalt),2),
+COUNT(gehalt)
+FROM personal
+WHERE abteilung LIKE 'Gruppe%'
+GROUP BY Abteilung
+HAVING SUM(Gehalt)>2550
+ORDER BY Abteilung
+
+
+
+a) Datensatz ändern
+
+b) Rückgängig geht nicht
+
+c) Alphabetische Sortierung
+
+d) Zeilen werden umgebrochen, evtl. Scrollbar erscheint
+
+e) nochmal anwählen Spalte Name
+
+f) KNr Anwählen
+
+g)-i) neuer Satz ohne Zusatzaktion bereits gespeichert
+
+
+Aufgabe 2
+a)
+SELECT * FROM kunde
+WHERE name LIKE 'F%'
+
+b)
+SELECT * FROM kunde
+WHERE name NOT LIKE 'F%'
+
+c)
+SELECT * FROM kunde
+WHERE strasse LIKE '%straße%'
+
+d) 
+SELECT * FROM kunde
+WHERE strasse LIKE '%gasse%'
+
+e)
+SELECT * FROM kunde
+WHERE knr > 3 AND knr < 5
+
+f)
+SELECT * FROM kunde
+WHERE plz LIKE '55%'
+OR plz LIKE '65%'
+
+# mit AND leeres Ergebnis
+# es gibt keine plz die gleichzeitig mit 55 und mit 65 beginnt
+
+
+Aufgabe 1
+a)
+SELECT * FROM `kunde`
+WHERE Ort = 'Wiesbaden'
+
+b)
+SELECT * FROM `kunde`
+WHERE Ort NOT LIKE 'Mainz'
+
+Alternativ:
+WHERE Ort != 'Mainz'
+
+c)
+WHERE Ort LIKE 'K%' OR ORT LIKE 'W%'
+
+d)
+SELECT * FROM `kunde` WHERE Ort LIKE 'K%' OR ORT LIKE 'W%'
+ORDER BY Ort ASC;
+
+e)
+SELECT * FROM `kunde` 
+WHERE PLZ BETWEEN 50000 AND 60000
+
+f)
+SELECT * FROM `kunde` 
+WHERE Ort = 'Mainz' AND PLZ >55000
+OR Ort = 'Wiesbaden' AND PLZ >65000
+
+g)
+SELECT * FROM `kunde` 
+WHERE Ort = 'Mainz' AND PLZ >55000
+OR  Ort = 'Wiesbaden' AND PLZ >65000
+ORDER BY Ort, PLZ DESC
+
+h)
+SELECT * FROM `kunde` 
+WHERE PLZ >= 55000 AND PLZ < 65700
+
+i)
+SELECT * FROM `kunde` 
+WHERE PLZ LIKE '_5%'
+
+Für Aufgabe 2 REGEXP:
+
+# am Ende ein 'er'
+SELECT * FROM `kunde` 
+WHERE Name REGEXP 'er$'
+
+# irgendwo ein b oder ein e das sind 24 von 26 DAtensätzen
+# also fast alle
+SELECT * FROM `kunde`
+WHERE Name REGEXP '[BE]'
+
+# Am Anfang ein B oder ein E
+SELECT * FROM `kunde`
+WHERE Name REGEXP '^[BE]'
+
+# Am Anfang kein!! B oder ein E
+# ^ in der eckigen Klammer heißt NOT
+SELECT * FROM `kunde`
+WHERE Name REGEXP '^[^BE]'
+
+a)
+SELECT persnr, name, vorname, eintrittsdatum
+FROM personal
+WHERE eintrittsdatum > '1994-12-31'
+
+b)
+SELECT persnr, name, vorname, eintrittsdatum
+FROM personal
+WHERE eintrittsdatum < '1994-12-31'
+
+c)
+SELECT persnr, name, vorname, taetigkeit, abteilung
+FROM personal
+WHERE abteilung LIKE '%Gruppe%'
+ORDER BY abteilung
+
+d)
+SELECT persnr, name, vorname, eintrittsdatum, Gehalt, Abteilung, Taetigkeit
+FROM personal
+WHERE Gehalt > 2500
+
+e)
+SELECT persnr, name, vorname, eintrittsdatum, Gehalt, Abteilung, Taetigkeit
+FROM personal
+WHERE Taetigkeit = 'Gruppenleiter'
+AND Gehalt > 2500
+
+f)
+SELECT persnr, name, vorname, eintrittsdatum, Gehalt, Abteilung, Taetigkeit
+FROM personal
+WHERE Abteilung = 'Gruppe A'
+
+g)
+SELECT persnr, name, vorname, eintrittsdatum, Gehalt, Abteilung, Taetigkeit
+FROM personal
+WHERE `Lohnsteuerklasse` > 1
+AND `Anzahl_Kinder` > 1
+
+h)
+SELECT persnr, name, vorname, eintrittsdatum, Gehalt, Abteilung, Taetigkeit,`Anzahl_Kinder`,`Lohnsteuerklasse`
+FROM personal
+WHERE `Lohnsteuerklasse` > 1
+AND `Anzahl_Kinder` > 1
+or `Anzahl_Kinder` >2
+
+i)
+SELECT persnr, name, vorname, abteilung, taetigkeit, gehalt
+FROM personal
+where taetigkeit = 'Gruppenleiter' or taetigkeit = 'einkäufer'
+
+j)
+SELECT persnr, name, vorname, verheiratet
+FROM personal
+where verheiratet = 'ja'
+
+k) SELECT persnr, name, vorname, verheiratet, eintrittsdatum
+FROM personal
+where month(eintrittsdatum) = 5
+
+l)
+SELECT persnr, name, vorname, verheiratet, eintrittsdatum
+FROM personal
+where dayname(eintrittsdatum) = 'Friday'
+
+
+m)
+
+SELECT persnr, name, vorname,
+eintrittsdatum,
+adddate(curdate(), 14) as in_14_tagen
+FROM personal
+
+n)
+SELECT persnr, name, vorname,
+eintrittsdatum,
+datediff(curdate(), eintrittsdatum) as tage_im_betrieb
+FROM personal
+
+o) 
+# ACHTUNG != Aufgabe p
+
+SELECT persnr, name, vorname,
+eintrittsdatum,
+year(eintrittsdatum) as jahr
+FROM personal
+
+SELECT persnr, name, vorname,
+eintrittsdatum,
+year(eintrittsdatum) as jahr
+FROM personal
+Where year(eintrittsdatum) <= year(curdate()) - 5
+
+p)
+SELECT persnr, name, vorname,
+eintrittsdatum,
+datediff(curdate(), eintrittsdatum) as tage_im_betrieb,
+datediff(curdate(), eintrittsdatum)/365.25  as jahre_im_betrieb
+
+FROM personal
+# geht nicht!!
+WHERE jahre_im_betrieb > 5
+order by jahre_im_betrieb desc
+
+
+# so geht'S
+SELECT persnr, name, vorname,
+eintrittsdatum,
+datediff(curdate(), eintrittsdatum) as tage_im_betrieb,
+datediff(curdate(), eintrittsdatum)/365.25  as jahre_im_betrieb
+FROM personal
+WHERE datediff(curdate(), eintrittsdatum)/365.25 > 5
+
+Aufgabe 2
+# ---------
+
+a)
+SELECT knr, name, ort
+FROM kunde
+WHERE name REGEXP '^[A-K]'
+AND ort = 'Wiesbaden'
+OR ort = 'Mainz'
+
+b)
+SELECT * FROM verkaeufer
+WHERE name LIKE 'He%'
+or name LIKE 'Hu%'
+ORDER BY name
+
+# oder mit REGEXP
+SELECT * FROM verkaeufer
+WHERE name REGEXP '^H[eu]'
+ORDER BY name
+
+--
+
+Aufgabe 1
+a)
+SELECT abteilung,
+AVG(gehalt),
+MAX(gehalt),
+MIN(gehalt),
+SUM(gehalt),
+COUNT(gehalt)
+FROM personal
+GROUP BY abteilung
+
+b)
+SELECT abteilung,
+AVG(gehalt),
+MAX(gehalt),
+MIN(gehalt),
+SUM(gehalt),
+COUNT(gehalt)
+FROM personal
+WHERE abteilung REGEXP 'Gruppe [A-C]'
+GROUP BY abteilung
+
+c)
+SELECT 
+COUNT(name) AS anzahl
+FROM personal
+WHERE abteilung REGEXP '^Gruppe [A-C]'
+
+
+d)
+SELECT 
+COUNT(name) AS anzahl
+FROM personal
+WHERE abteilung REGEXP '^Gruppe'
+
+e)
+SELECT 
+abteilung,
+ROUND(AVG(gehalt),2)
+FROM personal
+WHERE abteilung = 'Gruppe C'
+GROUP BY abteilung
+
+# so geht's auch, aber evtl. Laufzeitproblem
+SELECT 
+abteilung,
+ROUND(AVG(gehalt),2)
+FROM personal
+GROUP BY abteilung
+HAVING abteilung = 'Gruppe C'
+
+f)
+SELECT 
+abteilung,
+ROUND(AVG(gehalt),2)
+FROM personal
+WHERE abteilung = 'Gruppe A'
+AND eintrittsdatum > '1990-01-01'
+GROUP BY abteilung
+
+g)
+1)
+SELECT 
+SUM(gehalt)
+FROM personal
+WHERE abteilung IN ('Rechnungswesen', 'Einkauf', 'Personal')
+
+# nach Abteilung gruppiert
+2)
+SELECT 
+abteilung,
+SUM(gehalt)
+FROM personal
+WHERE abteilung IN ('Rechnungswesen', 'Einkauf', 'Personal')
+GROUP BY abteilung
+
+
+Aufgabe 2:
+a)
+SELECT 
+ROUND(AVG(preis),2),
+SUM(preis)
+FROM artikel
+
+b)
+SELECT
+LiefNr, 
+ROUND(AVG(preis),2),
+SUM(preis)
+FROM artikel
+GROUP BY LiefNr
+
+c)
+SELECT
+MIN(preis),
+MAX(preis)
+FROM artikel
+
+# geht leider nicht
+# wäre schön
+SELECT
+artnr, preis
+FROM artikel
+WHERE preis=MAX(preis)
+OR preis=MIN(preis)
+
+# mit Unterabfragen geht es
+# kein Stoff für die KA
+SELECT
+artnr, artname, preis
+FROM artikel
+WHERE preis=(SELECT MAX(preis) FROM artikel)
+OR preis=(SELECT MIN(preis) FROM artikel)
+
