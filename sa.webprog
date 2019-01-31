@@ -1,0 +1,75 @@
+// ARRAY AUFGABE
+
+'use strict';
+
+let sread=require('sread');
+
+let produkte=["Fahrrad","Brille","Hut","Schuh","Hose"];
+let preise=[333.33,29.99,543.89,133.99,88.99];
+let warenkorb=[0,0,0,0,0];
+let auswahl = 0;
+while(auswahl!==5){
+auswahl = parseInt(sread("0) Fahrrad 1) Brille 2) Hut 3) Schuh 4) Hose 5) zum Warenkorb"));
+if(auswahl !== 5 ){
+    warenkorb[auswahl]++;
+}
+
+
+}
+for(let i = 0;i<preise.length; i++){
+    console.log(warenkorb[i] +" " + produkte[i]) + (preise[i]*warenkorb[i] + " €");
+}
+
+
+//ML 
+
+
+'use strict';
+
+// Globale Variablen
+let fragen=[
+    "Linux-Befehl zum Datei kopieren",
+    "5+5=?",
+    "Wieviele Tage har der März?",
+    "Wieviele Minuten hat eine Stunde?"
+];
+let antworten=["cp",10,31,60];
+let klasse, frageIndex;
+//main
+$(document).ready(main);
+function main(){
+    $("#btnTest").click(pruef);
+    $("#btnCheck").click(check);
+    $("#fsPruef").hide();
+}
+
+// Funktionen
+
+
+function pruef(){
+    klasse=$("input[name='rbKlasse']:checked").val();
+    if(klasse){
+        frageIndex=Math.floor(Math.random()*fragen.length);
+        let frage=fragen[frageIndex];
+        $("#txtFrage").val(frage);
+        $("#fsPruef").show();
+    }else{
+        alert("Klasse angeben");
+    }
+}
+function check(){
+    /* Für die Schulaufgabe genügt es bei Listen den val() abzufrageb, nicht den text() */
+    let name=$("#lstSchueler").val();
+    let anzFaecher=0;
+    $("input[name='cbFach']:checked").each(function(){
+            anzFaecher++;
+    });
+    let antwort=$("#txtAntwort").val();
+    let text=name+", "+klasse+" , hat ";
+    if(antwort==antworten[frageIndex]){
+        text+= (5+2*anzFaecher);
+    }else{
+        text += 0;
+    }
+    alert(text+" Punkte");
+}
